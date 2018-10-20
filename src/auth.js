@@ -6,6 +6,9 @@ import { Redirect } from "react-router-dom";
 const defaultValue = {}; // for orphan Consumers
 const AuthContext = React.createContext(defaultValue);
 
+export const login = ({ email, password }) =>
+  firebaseAuth.signInWithEmailAndPassword(email, password);
+
 export class AuthProvider extends Component {
   constructor() {
     super();
@@ -32,7 +35,6 @@ export class AuthProvider extends Component {
 
 export const withAuth = authoriserFunc => {
   const { Consumer } = AuthContext;
-
   return (
     <Consumer>
       {user => {

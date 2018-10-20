@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "firebase": "5.5.5",
     "react": "16.5.2",
     "react-dom": "16.5.2",
     "react-router": "4.3.1",

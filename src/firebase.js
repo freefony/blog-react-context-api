@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/firestore";
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -11,6 +10,9 @@ const config = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID
 };
 
-firebase.initializeApp(config);
-
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+} else {
+  console.log("@@firebase: app already initialized initialized", firebase);
+}
 export const firebaseAuth = firebase.auth();
