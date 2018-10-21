@@ -9,6 +9,8 @@ const AuthContext = React.createContext(defaultValue);
 export const login = ({ email, password }) =>
   firebaseAuth.signInWithEmailAndPassword(email, password);
 
+export const logout = () => firebaseAuth.signOut();
+
 export class AuthProvider extends Component {
   constructor() {
     super();
@@ -35,22 +37,20 @@ export class AuthProvider extends Component {
 
 export const withAuth = authoriserFunc => {
   const { Consumer } = AuthContext;
-  return (
+  return ChildComponent => props => (
     <Consumer>
       {user => {
-        if (!user || !user.uid) {
-          return <Redirect push to="/signin" />;
+        if (!(user && user.uid)) {
+          console.warn("redirecting: no user object found");
+          return <Redirect push to="/login" />;
         }
+
         const authorisedUserData = authoriserFunc
           ? authoriserFunc(user)
           : { ...user };
-        return ChildComponent => {
-          return class AuthConsumer extends Component {
-            render() {
-              return <ChildComponent {...authorisedUserData} />;
-            }
-          };
-        };
+
+        const developedProps = { ...authorisedUserData, ...props };
+        return <ChildComponent {...developedProps} />;
       }}
     </Consumer>
   );
